@@ -1,0 +1,13 @@
+:root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.5; }
+body { margin: 0 auto; max-width: 64rem; padding: 2rem 1rem; }
+header { align-items: center; display: flex; justify-content: space-between; }
+table { border-collapse: collapse; width: 100%; }
+th, td {
+  border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  padding: 0.5rem; text-align: left; vertical-align: top;
+}
+.number { text-align: right; }
+.nowrap { white-space: nowrap; }
+.error { border-left: 3px solid #c0392b; padding-left: 0.75rem; }
+.muted { opacity: 0.7; }
+label, input, button { display: block; font: inherit; margin-top: 0.5rem; }
