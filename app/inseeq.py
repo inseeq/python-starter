@@ -121,5 +121,5 @@ def load_env() -> None:
 def get_client() -> Client:
     api_key = os.environ.get("INSEEQ_API_KEY")
     if not api_key:
-        raise InseeqError("missing_key", "INSEEQ_API_KEY is not set. Run uv run cli.py setup in your own terminal.")
+        raise InseeqError("missing_key", "INSEEQ_API_KEY is not set. Run uv run cli.py setup --from-clipboard.")
     return Client(api_key, os.environ.get("INSEEQ_API_URL"))

@@ -3,12 +3,14 @@ from collections.abc import AsyncIterable
 from typing import Any
 from urllib.parse import parse_qs
 
-from fastapi import BackgroundTasks, FastAPI, Request
+from fastapi import BackgroundTasks, FastAPI, Query, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response
 from standardwebhooks import Webhook, WebhookVerificationError
 
-from app.inseeq import InseeqError, get_client, load_env
-from app.pages import render_dashboard, render_error, render_login
+from app import paid_media
+from app.data import parse_range
+from app.inseeq import load_env
+from app.pages import render_login
 from app.session import MAX_AGE_SECONDS, SESSION_COOKIE, constant_time_equal, create_session, is_local, is_valid_session
 
 PUBLIC_PATHS = {"/login", "/api/login", "/webhooks/inseeq"}
@@ -17,7 +19,7 @@ MAX_BODY_BYTES = 1024 * 1024
 load_env()
 PASSWORD = os.environ.get("DASHBOARD_PASSWORD")
 if not PASSWORD:
-    raise SystemExit("DASHBOARD_PASSWORD is not set, so the app will not start. Run uv run cli.py setup in your own terminal.")
+    raise SystemExit("DASHBOARD_PASSWORD is not set, so the app will not start. Run uv run cli.py setup --from-clipboard, or set it on your host.")
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
@@ -64,12 +66,8 @@ def logout() -> Response:
 
 
 @app.get("/", response_class=HTMLResponse)
-def dashboard() -> str:
-    try:
-        client = get_client()
-        return render_dashboard(client.status(), client.list_tables())
-    except InseeqError as error:
-        return render_error(error.code, error.message)
+def dashboard(range_key: str | None = Query(None, alias="range")) -> str:
+    return paid_media.render(parse_range(range_key))
 
 
 async def read_capped_body(stream: AsyncIterable[bytes]) -> bytes | None:
