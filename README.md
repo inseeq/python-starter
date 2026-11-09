@@ -23,6 +23,7 @@ You need [uv](https://docs.astral.sh/uv/). In Claude, with the inseeq connector,
 | `app/main.py`, `app/session.py` | The routes, the login gate, the webhook receiver and the signed cookie. Add your work to `handle_event` |
 | `app/pages.py` | The HTML. Every value goes through `escape` |
 | `queries/` | One `.sql` file per metric, with one SELECT each |
+| `examples/daily-digest` | A daily Slack post from one query, run by GitHub Actions. No server. |
 | `cli.py` | The commands below |
 
 ```python
