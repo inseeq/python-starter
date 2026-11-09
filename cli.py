@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from app.inseeq import DEFAULT_API_URL, ENV_FILE, QUERIES_DIR, InseeqError, get_client, load_env
+from app.inseeq import DEFAULT_API_URL, ENV_FILE, QUERIES_DIR, Client, InseeqError, get_client, load_env
 
 RECEIVER_PATH = "/webhooks/inseeq"
 QUERY_ROW_LIMIT = 1_000
