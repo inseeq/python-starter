@@ -32,7 +32,7 @@ Do these steps in order. Say in one line what you are doing at each step.
    - If not: `git clone --depth 1 https://github.com/inseeq/python-starter <name> && cd <name> && rm -rf .git && git init -q`. Tell the user it lives only on their computer for now.
    - Never fork: a fork of a public repo stays public.
 2. **Install:** `uv sync`. If `uv` is not found, tell the user to install it from <https://docs.astral.sh/uv/>, then restart Claude Code.
-3. **Get a data key.** Call the inseeq connector's `create_data_key` with label `Dashboard`. Give the user the link exactly as it comes back, and say: "Open this, click Show my key, then Copy, and tell me when you've copied it." Never open the link, and never ask for the key in chat. If no inseeq tools are loaded, ask the user to add the inseeq connector in Claude, then restart Claude Code.
+3. **Get an API key.** Call the inseeq connector's `create_api_key` with label `Dashboard`. Give the user the link exactly as it comes back, and say: "Open this, click Show my key, then Copy, and tell me when you've copied it." Never open the link, and never ask for the key in chat. If no inseeq tools are loaded, ask the user to add the inseeq connector in Claude, then restart Claude Code.
 4. **When the user says they copied it:** `uv run cli.py setup --from-clipboard`. It checks the connection, then saves the key and a dashboard password in `.env`, clears the clipboard and prints neither. If it says the clipboard holds no key, ask the user to click Copy again.
 5. **Start it:** `uv run uvicorn app.main:app --reload` in the background. If `lsof -iTCP:8000 -sTCP:LISTEN` shows port 8000 is taken, add `--port 8001` and use that address. Wait for it to answer, then run `uv run cli.py password` and tell the user: "Open http://localhost:8000 and paste the password. It's on your clipboard."
 6. **Tell the user what they are looking at** in two or three sentences, then explain saved queries (below) in plain words, and offer to build their next page.
@@ -66,7 +66,7 @@ group by day, platform
 order by day, platform
 ```
 
-- **Tables are named without a dataset.** The data key already decides whose data you read.
+- **Tables are named without a dataset.** The API key already decides whose data you read.
 - **`@start_date` is a parameter.** The value travels separately from the SQL, so it is never pasted into it.
 - **A page runs it by name:**
 
@@ -102,7 +102,7 @@ Other Python hosts work too: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`,
 | Command | What it does |
 |---|---|
 | `uv run uvicorn app.main:app --reload` | The dashboard on http://localhost:8000 |
-| `uv run cli.py setup --from-clipboard` | Saves a copied data key to `.env`. `uv run cli.py setup` alone asks for it instead |
+| `uv run cli.py setup --from-clipboard` | Saves a copied API key to `.env`. `uv run cli.py setup` alone asks for it instead |
 | `uv run cli.py password` | Copies the dashboard password |
 | `uv run cli.py query <name or SQL>` | Runs a saved query, or SQL, and prints the rows |
 | `uv run cli.py vercel-env` | Sends `.env`'s values to the linked Vercel project |

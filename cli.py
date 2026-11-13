@@ -80,7 +80,7 @@ def write_clipboard(value: str) -> bool:
 def ask_for_key() -> str:
     if not (sys.stdin.isatty() and sys.stdout.isatty()):
         sys.exit("Setup needs a real terminal, or the key on the clipboard: uv run cli.py setup --from-clipboard")
-    api_key = getpass.getpass("Paste your inseeq data key (it stays hidden): ").strip()
+    api_key = getpass.getpass("Paste your inseeq API key (it stays hidden): ").strip()
     if not api_key:
         sys.exit("No key entered, so nothing was changed.")
     return api_key
@@ -89,7 +89,7 @@ def ask_for_key() -> str:
 def key_from_clipboard() -> str:
     copied = (read_clipboard() or "").strip()
     if not copied.startswith(KEY_PREFIX) or re.search(r"\s", copied):
-        sys.exit("The clipboard does not hold an inseeq data key. Click Copy on the key page, then run this again. Nothing was changed.")
+        sys.exit("The clipboard does not hold an inseeq API key. Click Copy on the key page, then run this again. Nothing was changed.")
     return copied
 
 
